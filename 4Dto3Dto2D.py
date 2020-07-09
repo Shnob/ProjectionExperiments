@@ -7,7 +7,7 @@ ORTHO = False
 
 size = (800, 800)
 scl = 1.6 / (100 * ORTHO + 1)
-fullDist = 3.2
+fullDist = 3
 
 """
 angXY = random() * np.pi * 2
@@ -31,7 +31,7 @@ maxSpd = 0.003
 centerMatrix = np.matrix([[250], [250], [250]])
 
 pygame.init()
-pygame.display.set_caption('3D to 2D Projection')
+pygame.display.set_caption('4D to 3D to 2D Projection')
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
