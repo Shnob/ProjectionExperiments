@@ -8,7 +8,7 @@ ORTHO = False
 mousePos = None
 
 size = (800, 800)
-scl = 1.6 / (100 * ORTHO + 1)
+scl = 1 / (100 * ORTHO + 1)
 fullDist = 3
 
 """
@@ -20,9 +20,9 @@ angYU = random() * np.pi * 2
 angZU = random() * np.pi * 2
 """
 
-angXY = random()
-angYZ = random()
-angXZ = random()
+angXY = 0#random()
+angYZ = 0#-np.pi/8#random()
+angXZ = 0#-np.pi/8#random()
 angXU = 0
 angYU = 0
 angZU = 0
@@ -52,11 +52,11 @@ delYU = mapp(random(), 0, 1, -spd, spd)
 delZU = mapp(random(), 0, 1, -spd, spd)
 """
 delXY = 0
-delYZ = 0
+delYZ = 0#mapp(mousePos, 0, size[1], -np.pi, np.pi)
 delXZ = 0
 delXU = 1/100
 delYU = 0
-delZU = 0
+delZU = 0#1/100
 
 def bg():
     screen.fill((0, 0, 0))
@@ -105,7 +105,6 @@ def draw():
 
 def projectObject4Dto3D(obj):
     newObj = []
-    index = 0
     for vert in obj:
         distance = fullDist
 
@@ -124,9 +123,6 @@ def projectObject4Dto3D(obj):
         pVert = rotXY * (rotYZ * (rotXZ * (rotXU * (rotYU * (rotZU * pVert)))))
         #pVert = rotXU * pVert
 
-        if index == 0:
-            print(pVert)
-
         d = distance
         if not ORTHO:        
             d = 1/(distance - pVert.item(3))
@@ -138,7 +134,6 @@ def projectObject4Dto3D(obj):
 
         #newObj.append([pVert.item((0))+250, pVert.item((1))+250])
         newObj.append([pVert.item((0)), pVert.item((1)), pVert.item((2))])
-        index += 1
     return newObj
 
 ang1 = 0
@@ -264,6 +259,9 @@ while True:
     mousePos = pygame.mouse.get_pos()
 
     draw()
+
+    angYZ = mapp(mousePos[1], 0, size[1], np.pi, -np.pi)
+    angXZ = mapp(mousePos[0], 0, size[0], np.pi, -np.pi)
 
     angXY += delXY
     angYZ += delYZ
