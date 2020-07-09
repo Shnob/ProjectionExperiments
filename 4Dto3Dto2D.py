@@ -5,6 +5,8 @@ import sys
 
 ORTHO = False
 
+mousePos = None
+
 size = (800, 800)
 scl = 1.6 / (100 * ORTHO + 1)
 fullDist = 3
@@ -18,9 +20,9 @@ angYU = random() * np.pi * 2
 angZU = random() * np.pi * 2
 """
 
-angXY = 0
-angYZ = 0
-angXZ = 0
+angXY = random()
+angYZ = random()
+angXZ = random()
 angXU = 0
 angYU = 0
 angZU = 0
@@ -52,7 +54,7 @@ delZU = mapp(random(), 0, 1, -spd, spd)
 delXY = 0
 delYZ = 0
 delXZ = 0
-delXU = 0
+delXU = 1/100
 delYU = 0
 delZU = 0
 
@@ -103,22 +105,27 @@ def draw():
 
 def projectObject4Dto3D(obj):
     newObj = []
+    index = 0
     for vert in obj:
         distance = fullDist
 
         s = np.sin
         c = np.cos
 
-        rotXY = np.matrix([ [c(angXY), s(angXY), 0, 0], [-s(angXY), c(angXY), 0, 0], [0, 0, 1, 0], [0, 0, 0, 1] ])
-        rotYZ = np.matrix([ [1, 0, 0, 0], [0, c(angYZ), s(angYZ), 0], [0, -s(angYZ), c(angYZ), 0], [0, 0, 0, 1] ])
+        rotXY = np.matrix([ [c(angXY), -s(angXY), 0, 0], [s(angXY), c(angXY), 0, 0], [0, 0, 1, 0], [0, 0, 0, 1] ])
+        rotYZ = np.matrix([ [1, 0, 0, 0], [0, c(angYZ), -s(angYZ), 0], [0, s(angYZ), c(angYZ), 0], [0, 0, 0, 1] ])
         rotXZ = np.matrix([ [c(angXZ), 0, -s(angXZ), 0], [0, 1, 0, 0], [s(angXZ), 0, c(angXZ), 0], [0, 0, 0, 1] ])
-        rotXU = np.matrix([ [c(angXU), 0, 0, s(angXU)], [0, 1, 0, 0], [0, 0, 1, 0], [-s(angXU), 0, 0, c(angXU)] ])
+        rotXU = np.matrix([ [c(angXU), 0, 0, -s(angXU)], [0, 1, 0, 0], [0, 0, 1, 0], [s(angXU), 0, 0, c(angXU)] ])
         rotYU = np.matrix([ [1, 0, 0, 0], [0, c(angYU), 0, -s(angYU)], [0, 0, 1, 0], [0, s(angYU), 0, c(angYU)] ])
         rotZU = np.matrix([ [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, c(angZU), -s(angZU)], [0, 0, s(angZU), c(angZU)] ])
 
         pVert = np.matrix([[vert[0]], [vert[1]], [vert[2]], [vert[3]]])
 
-        pVert = rotZU * (rotYU * (rotXU * (rotXZ * (rotYZ * (rotXY * pVert)))))
+        pVert = rotXY * (rotYZ * (rotXZ * (rotXU * (rotYU * (rotZU * pVert)))))
+        #pVert = rotXU * pVert
+
+        if index == 0:
+            print(pVert)
 
         d = distance
         if not ORTHO:        
@@ -131,15 +138,34 @@ def projectObject4Dto3D(obj):
 
         #newObj.append([pVert.item((0))+250, pVert.item((1))+250])
         newObj.append([pVert.item((0)), pVert.item((1)), pVert.item((2))])
+        index += 1
     return newObj
 
+ang1 = 0
+ang2 = 0
+ang3 = 0
+
+'''
+ang1 = random()
+ang2 = random()
+ang3 = random()
+'''
 def projectObject3Dto2D(obj):
     newObj = []
     for vert in obj:
         distance = fullDist
 
+        s = np.sin
+        c = np.cos
+
         pVert = np.matrix([[vert[0]], [vert[1]], [vert[2]]])
         
+        r1 = np.matrix([ [c(ang1), -s(ang1), 0], [s(ang1), c(ang1), 0], [0, 0, 1] ])
+        r2 = np.matrix([ [c(ang2), 0, -s(ang2)], [0, 1, 0], [s(ang2), 0, c(ang2)] ])
+        r3 = np.matrix([ [1, 0, 0], [0, c(ang3), -s(ang3)], [0, s(ang3), c(ang3)] ])
+
+        pVert = r3* (r2 * (r1 * pVert))
+
         d = distance
         if not ORTHO:        
             d = 1/(distance - pVert.item(2))
@@ -235,6 +261,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+    mousePos = pygame.mouse.get_pos()
 
     draw()
 
@@ -245,14 +272,14 @@ while True:
     angYU += delYU
     angZU += delZU
 
-    
+    '''
     delXY = np.clip(delXY + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delYZ = np.clip(delYZ + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delXZ = np.clip(delXZ + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delXU = np.clip(delXU + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delYU = np.clip(delYU + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delZU = np.clip(delZU + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
-    
+    '''
     #print("{} {} {} {} {} {}".format(delXY, delYZ, delXZ, delXU, delYU, delZU))
 
     pygame.display.update()

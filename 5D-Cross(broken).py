@@ -5,8 +5,9 @@ import sys
 
 ORTHO = False
 RANDDELS = False
+TIMEDELS = False
 
-size = (800, 800)
+size = (1600, 800)
 scl = 3 / (100 * ORTHO + 1)
 fullDist = 3
 
@@ -77,18 +78,18 @@ def line(pos1, pos2):
 
     pygame.draw.line(screen, lineCol, pos1, pos2, 1)
 
-def showObject(obj, orig):
+def showObject(obj, orig, offset):
     if orig['type'] == 0:
         def dist(a, b):
             return np.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2+(a[3]-b[3])**2+(a[4]-b[4])**2)
         for i in range(len(obj)):
-            point(obj[i])
+            point((obj[i][0] * size[1] * scl + offset[0], obj[i][1] * size[1] * scl + offset[1]))
 
             
             curr = orig['verts'][i]
             for other in range(len(orig['verts'])):
                 if dist(curr, orig['verts'][other]) <= orig['conn']:
-                    line(obj[i], obj[other])
+                    line((obj[i][0] * size[1] * scl + offset[0], obj[i][1] * size[1] * scl + offset[1]), (obj[other][0] * size[1] * scl + offset[0], obj[other][1] * size[1] * scl + offset[1]))
     elif orig['type'] == 1:
         for i in range(len(obj)):
             sphere(obj[i], 0)
@@ -97,9 +98,10 @@ def showObject(obj, orig):
 def draw():
     bg()
 
-    projectAndDraw(penteract)
+    projectAndDraw(penteract, (size[0]/4, size[1]/2))
+    projectAndDraw(penteract, (size[0]*3/4, size[1]/2))
 
-def projectObject5Dto4D(obj):
+def projectObject5Dto4D(obj, offset):
     newObj = []
     for vert in obj:
         distance = fullDist
@@ -121,7 +123,7 @@ def projectObject5Dto4D(obj):
             np.matrix( [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, c(a[9]), -s(a[9])], [0, 0, 0, s(a[9]), c(a[9])]] )    # WV
         ]
 
-        pVert = np.matrix([ [vert[0]], [vert[1]], [vert[2]], [vert[3]], [vert[4]] ])
+        pVert = np.matrix([ [vert[0] + offset[0]/size[0]], [vert[1] + offset[1]/size[1]], [vert[2]], [vert[3]], [vert[4]] ])
         
         for rot in rots:
             pVert = rot * pVert
@@ -137,7 +139,7 @@ def projectObject5Dto4D(obj):
         newObj.append([pVert.item(0), pVert.item(1), pVert.item(2), pVert.item(3)])
     return newObj
 
-def projectObject4Dto3D(obj):
+def projectObject4Dto3D(obj, offset):
     newObj = []
     for vert in obj:
         distance = fullDist
@@ -157,7 +159,7 @@ def projectObject4Dto3D(obj):
         newObj.append([pVert.item((0)), pVert.item((1)), pVert.item((2))])
     return newObj
 
-def projectObject3Dto2D(obj):
+def projectObject3Dto2D(obj, offset):
     newObj = []
     for vert in obj:
         distance = fullDist
@@ -171,18 +173,18 @@ def projectObject3Dto2D(obj):
 
         projMatrix = np.matrix([[d, 0, 0], [0, d, 0]])
 
-        pVert = (pVert * size[0] * scl)
+        #pVert = (pVert * size[0] * scl)
         pVert = projMatrix * pVert
 
-        newObj.append([pVert.item((0))+size[0]/2, pVert.item((1))+size[1]/2])
+        newObj.append([pVert.item(0), pVert.item(1)])
     return newObj
 
-def projectAndDraw(obj):
-    obj4D = projectObject5Dto4D(obj['verts'])
-    obj3D = projectObject4Dto3D(obj4D)
-    obj2D = projectObject3Dto2D(obj3D)
+def projectAndDraw(obj, pos):
+    obj4D = projectObject5Dto4D(obj['verts'], pos)
+    obj3D = projectObject4Dto3D(obj4D, pos)
+    obj2D = projectObject3Dto2D(obj3D, pos)
 
-    showObject(obj2D, obj)
+    showObject(obj2D, obj, pos)
 
 h = 1
 l = -1
@@ -259,8 +261,9 @@ while True:
 
     draw()
 
-    for i in range(len(delAngles)):
-        delAngles[i] += np.clip(mapp(random(), 0, 1, -spd, spd), -1, 1)
-        angles[i] += delAngles[i] * maxSpd
+    if TIMEDELS:
+        for i in range(len(delAngles)):
+            delAngles[i] += np.clip(mapp(random(), 0, 1, -spd, spd), -1, 1)
+            angles[i] += delAngles[i] * maxSpd
 
     pygame.display.update()
