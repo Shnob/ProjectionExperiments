@@ -7,7 +7,7 @@ ORTHO = False
 
 mousePos = None
 
-size = (800, 800)
+size = (600, 600)
 scl = 1 / (100 * ORTHO + 1)
 fullDist = 3
 
@@ -21,8 +21,8 @@ angZU = random() * np.pi * 2
 """
 
 angXY = 0#random()
-angYZ = 0#-np.pi/8#random()
-angXZ = 0#-np.pi/8#random()
+angYZ = 1#-np.pi/8#random()
+angXZ = 1#-np.pi/8#random()
 angXU = 0
 angYU = 0
 angZU = 0
@@ -56,7 +56,7 @@ delYZ = 0#mapp(mousePos, 0, size[1], -np.pi, np.pi)
 delXZ = 0
 delXU = 1/100
 delYU = 0
-delZU = 0#1/100
+delZU = 1#1/100
 
 def bg():
     screen.fill((0, 0, 0))
@@ -260,16 +260,18 @@ while True:
 
     draw()
 
+    '''
     angYZ = mapp(mousePos[1], 0, size[1], np.pi, -np.pi)
     angXZ = mapp(mousePos[0], 0, size[0], np.pi, -np.pi)
-
+    '''
+    '''
     angXY += delXY
     angYZ += delYZ
     angXZ += delXZ
     angXU += delXU
     angYU += delYU
     angZU += delZU
-
+    '''
     '''
     delXY = np.clip(delXY + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
     delYZ = np.clip(delYZ + mapp(random(), 0, 1, -spd, spd), -maxSpd, maxSpd)
