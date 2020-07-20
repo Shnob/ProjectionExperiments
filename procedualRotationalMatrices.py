@@ -38,9 +38,10 @@ class RotMatsN:
             mat = r * mat
 
         return mat
-
+'''
 test = RotMatsN(4)
 
 m = np.matrix([ [1], [0], [0], [0] ])
 
 print(test.rotMat(m, (0, 0, 0, 0, 0, 0)))
+'''
