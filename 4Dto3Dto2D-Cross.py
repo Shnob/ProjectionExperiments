@@ -8,8 +8,8 @@ ORTHO = False
 
 mousePos = None
 
-size = (600, 600)
-scl = 1 / (100 * ORTHO + 1)
+size = (1000, 600)
+scl = 0.6 / (100 * ORTHO + 1)
 fullDist = 3
 
 rotMat = RotMatsN(4)
@@ -39,7 +39,7 @@ for i in range(len(rots)):
 #deltaRot[5] = 0
 
 spd = 0.0003
-maxSpd = 0.03
+maxSpd = 0.01
 
 centerMatrix = np.matrix([[250], [250], [250]])
 
@@ -132,7 +132,7 @@ ang1 = random()
 ang2 = random()
 ang3 = random()
 '''
-def projectObject3Dto2D(obj):
+def projectObject3Dto2D(obj, off = None):
     newObj = []
     for vert in obj:
         distance = fullDist
@@ -148,6 +148,9 @@ def projectObject3Dto2D(obj):
 
         pVert = r3* (r2 * (r1 * pVert))
 
+        if off is not None:
+            pVert = pVert - off
+
         d = distance
         if not ORTHO:        
             d = 1/(distance - pVert.item(2))
@@ -158,14 +161,18 @@ def projectObject3Dto2D(obj):
         pVert = (pVert * size[0] * scl)
         pVert = projMatrix * pVert
 
+        pVert = pVert - np.matrix([ [400 * off.item(0)], [0] ])
+
         newObj.append([pVert.item((0))+size[0]/2, pVert.item((1))+size[1]/2])
     return newObj
 
 def projectAndDraw(obj):
     obj3D, dists = projectObject4Dto3D(obj['verts'])
-    obj2D = projectObject3Dto2D(obj3D)
+    left = projectObject3Dto2D(obj3D, np.matrix([ [-0.3], [0], [0] ]))
+    right = projectObject3Dto2D(obj3D, np.matrix([ [0.3], [0], [0] ]))
 
-    showObject(obj2D, obj, dists)
+    showObject(left, obj, dists)
+    showObject(right, obj, dists)
 
 
 

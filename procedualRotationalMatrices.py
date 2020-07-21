@@ -18,6 +18,7 @@ class RotMatsN:
             if a == dim:
                 break
             self.mats.append((a, b))
+        self.mats.reverse()
     def rotMat(self, mat, rots):
         for i in range(len(self.mats)):
             r = np.zeros((self.dim, self.dim))
