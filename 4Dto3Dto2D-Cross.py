@@ -26,7 +26,7 @@ rots = [
 deltaRot = [
     0,
     0,
-    0,
+    1.2,
     0,
     0,
     0,
@@ -38,7 +38,6 @@ for i in range(len(rots)):
 #deltaRot[4] = 0
 #deltaRot[5] = 0
 
-spd = 0.0003
 maxSpd = 0.01
 
 centerMatrix = np.matrix([[250], [250], [250]])
@@ -161,7 +160,7 @@ def projectObject3Dto2D(obj, off = None):
         pVert = (pVert * size[0] * scl)
         pVert = projMatrix * pVert
 
-        pVert = pVert - np.matrix([ [400 * off.item(0)], [0] ])
+        pVert = pVert - np.matrix([ [440 * off.item(0)], [0] ])
 
         newObj.append([pVert.item((0))+size[0]/2, pVert.item((1))+size[1]/2])
     return newObj
