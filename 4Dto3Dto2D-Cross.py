@@ -5,6 +5,7 @@ import sys
 from procedualRotationalMatrices import *
 
 ORTHO = False
+KB = True
 
 mousePos = None
 
@@ -38,7 +39,7 @@ for i in range(len(rots)):
 #deltaRot[4] = 0
 #deltaRot[5] = 0
 
-maxSpd = 0.01
+maxSpd = 0.02
 
 centerMatrix = np.matrix([[250], [250], [250]])
 
@@ -253,6 +254,19 @@ while True:
     mousePos = pygame.mouse.get_pos()
 
     draw()
+
+    p = lambda x : 1 if pygame.key.get_pressed()[x[0]] else -1 if pygame.key.get_pressed()[x[1]] else 0
+
+    if KB:
+        deltaRot[0] = p((pygame.K_e, pygame.K_q))
+        deltaRot[1] = p((pygame.K_a, pygame.K_d))
+        deltaRot[2] = p((pygame.K_w, pygame.K_s))
+        deltaRot[3] = p((pygame.K_u, pygame.K_o))
+        deltaRot[4] = p((pygame.K_j, pygame.K_l))
+        deltaRot[5] = p((pygame.K_i, pygame.K_k))
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            for i in range(len(rots)):
+                rots[i] = 0
 
     for i in range(len(rots)):
         pass#deltaRot[i] = 0
