@@ -33,7 +33,7 @@ deltaRot = [
 ]
 
 for i in range(len(rots)):
-    deltaRot[i] = random() * 2 - 1#*np.pi
+    pass#deltaRot[i] = random() * 2 - 1#*np.pi
 
 #deltaRot[4] = 0
 #deltaRot[5] = 0

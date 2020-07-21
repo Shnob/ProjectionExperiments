@@ -1,4 +1,5 @@
 import numpy as np
+from copy import copy
 
 choose = lambda n, k : int(np.math.factorial(n) / (np.math.factorial(k) * np.math.factorial(n - k)))
 
@@ -19,7 +20,11 @@ class RotMatsN:
                 break
             self.mats.append((a, b))
         #self.mats.reverse()
-    def rotMat(self, mat, rots):
+        self.mats.sort(key = lambda x : x[0] + x[1]*1.1, reverse=True)
+
+    def rotMat(self, mat, _rots):
+        rots = copy(_rots)
+        rots.reverse()
         for i in range(len(self.mats)):
             r = np.zeros((self.dim, self.dim))
             c = np.cos(rots[i])
