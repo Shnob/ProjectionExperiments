@@ -27,7 +27,7 @@ rots = [
 deltaRot = [
     0,
     0,
-    1.2,
+    0,
     0,
     0,
     0,
@@ -61,7 +61,7 @@ def point(pos, dist):
 
     pos = [ int(x) for x in pos ]
 
-    pygame.draw.circle(screen, pointCol, pos, int(dist * 14))
+    pygame.draw.circle(screen, pointCol, pos, int(dist * 14)) #14
 
 def sphere(pos, team):
 
@@ -189,13 +189,17 @@ cube = [
 ]
 """
 q = np.sqrt
-fiveCell = [
-    [1, 1, 1, -1/q(5)],
-    [1, -1, -1, -1/q(5)],
-    [-1, 1, -1, -1/q(5)],
-    [-1, -1, 1, -1/q(5)],
-    [0, 0, 0, q(5) - 1/q(5)]
-]
+fiveCell = {
+    'type' : 0,
+    'conn' : 3,
+    'verts' : [
+        [1, 1, 1, -1/q(5)],
+        [1, -1, -1, -1/q(5)],
+        [-1, 1, -1, -1/q(5)],
+        [-1, -1, 1, -1/q(5)],
+        [0, 0, 0, q(5) - 1/q(5)]
+    ]
+}
 del q
 
 h = 1
