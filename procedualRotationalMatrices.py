@@ -19,7 +19,6 @@ class RotMatsN:
             if a == dim:
                 break
             self.mats.append((a, b))
-        #self.mats.reverse()
         self.mats.sort(key = lambda x : x[0] + x[1]*1.1, reverse=True)
 
     def rotMat(self, mat, _rots):
@@ -44,10 +43,29 @@ class RotMatsN:
             mat = r * mat
 
         return mat
-'''
-test = RotMatsN(4)
+    def rotMatList(self, mats, _rots):
+        rots = copy(_rots)
+        rots.reverse()
+        ret = []
+        for k in range(len(mats)):
+            mat = mats[k]
+            for i in range(len(self.mats)):
+                r = np.zeros((self.dim, self.dim))
+                c = np.cos(rots[i]) 
+                s = np.sin(rots[i])
+                a = self.mats[i][0]
+                b = self.mats[i][1]
 
-m = np.matrix([ [1], [0], [0], [0] ])
+                for j in range(self.dim):
+                    r[j][j] = 1
 
-print(test.rotMat(m, (0, 0, 0, 0, 0, 0)))
-'''
+                r[a][a] = c
+                r[b][b] = c
+                r[a][b] = -s
+                r[b][a] = s
+
+                r = np.matrix(r)
+                mat = r * mat
+
+            ret.append(mat)
+        return ret
