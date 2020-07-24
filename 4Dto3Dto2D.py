@@ -33,7 +33,7 @@ deltaRot = [
 ]
 
 for i in range(len(rots)):
-    pass#deltaRot[i] = random() * 2 - 1#*np.pi
+    deltaRot[i] = random() * 2 - 1#*np.pi
 
 #deltaRot[4] = 0
 #deltaRot[5] = 0
@@ -263,6 +263,9 @@ while True:
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             for i in range(len(rots)):
                 rots[i] = 0
+    
+    if pygame.key.get_pressed()[pygame.K_m]:
+        pygame.image.save(screen, "screenshot.jpeg")
 
     for i in range(len(rots)):
         pass#deltaRot[i] = 0

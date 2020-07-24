@@ -10,7 +10,7 @@ pCol = (255, 255, 255)
 lCol = (255, 255, 255)
 
 size = (600, 600)
-KB = True
+KB = False
 scl = 18
 
 pygame.init()
@@ -70,7 +70,7 @@ def line(pos1, pos2):
     pos1 = [ int(mapp(x, -1 / scl, 1 / scl, 0, size[0])) for x in pos1 ]
     pos2 = [ int(mapp(x, -1 / scl, 1 / scl, 0, size[0])) for x in pos2 ]
 
-    pygame.draw.line(screen, lCol, pos1, pos2, 2)
+    pygame.draw.line(screen, lCol, pos1, pos2, 1)
 
 def show(obj):
     obj6 = []
@@ -150,6 +150,8 @@ while True:
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             for i in range(len(rots)):
                 rots[i] = 0
+    if pygame.key.get_pressed()[pygame.K_m]:
+        pygame.image.save(screen, "screenshot.jpeg")
 
     for i in range(len(rots)):
         pass#deltaRot[i] = 0

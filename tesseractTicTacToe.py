@@ -41,7 +41,7 @@ for x in range(3):
         for z in range(3):
             board[x][y].append([])
             for w in range(3):
-                board[x][y][z].append(int(random() * 4 - 1)) #-1
+                board[x][y][z].append((random() * 255, random() * 255, random() * 255))#-1)#int(random() * 4 - 1)) #-1
 
 proj4 = ProjMatN(4, dist)
 proj3 = ProjMatN(3, dist)
@@ -59,11 +59,12 @@ def point(p):
     pos = [ int(mapp(x, -1 / scl, 1 / scl, 0, size[0])) for x in pos ]
 
     pCol = (255, 255, 255)
+    pCol = (p[3][0], p[3][1], p[3][2])
     if p[3] == 0:
         pCol = (0, 0, 255)
     elif p[3] == 1:
         pCol = (255, 0, 0)
-    pygame.draw.circle(screen, pCol, pos, int(p[2]*p[1]*50)) #14
+    pygame.draw.circle(screen, pCol, pos, int(p[2]*p[1]*80)) #14
 
 def show():
     shapeMat = []
