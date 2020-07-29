@@ -8,7 +8,7 @@ pygame.init()
 pygame.display.set_caption('Wavy Circles')
 screen = pygame.display.set_mode(size)
 
-divs = 16
+divs = 32
 n = 0
 nInc = 2 * math.pi / 1000
 
@@ -21,7 +21,7 @@ def bg():
 def point(pos, col):
     col = pygame.Color(0)
     col.hsva = (h%360, 100, 100, 100)
-    pygame.draw.circle(screen, col, [ int(x) for x in pos ], 1)
+    pygame.draw.circle(screen, col, [ int(x) for x in pos ], 0)
 
 def draw():
     for x in range(divs):
